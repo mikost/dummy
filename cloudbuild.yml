@@ -1,0 +1,21 @@
+
+
+
+
+steps:
+- id: 'Maven package'
+  name: 'maven:3.6.3-openjdk-15-slim'
+  args:
+    - mvn
+    - clean
+    - verify
+    - --no-transfer-progress
+
+- id: 'Build Docker Image'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/dummy/$REPO_NAME:$SHORT_SHA', '.']
+
+
+images:
+- eu.gcr.io/$PROJECT_ID/dummy/$REPO_NAME:$SHORT_SHA
+
