@@ -1,0 +1,46 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "dummy"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "dummy"
+  namespace: "dummy"
+  labels:
+    app: "dummy"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "dummy"
+  template:
+    metadata:
+      labels:
+        app: "dummy"
+    spec:
+      containers:
+      - name: "dummy-sha256-1"
+        image: "eu.gcr.io/mikko-private-nec86c/dummy/dummy@sha256:a2c0833480df1a7085682a88fb7c2826e7c981c026ca5417657497105e1162d4"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "dummy-hpa-murm"
+  namespace: "dummy"
+  labels:
+    app: "dummy"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "dummy"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

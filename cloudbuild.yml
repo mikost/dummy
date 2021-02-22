@@ -16,6 +16,14 @@ steps:
   args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/dummy/$REPO_NAME:$SHORT_SHA', '.']
 
 
+- id: 'Deploy to mikko-private-cluster'
+  name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=k8s-deployment.yml
+  - --location=europe-west1-b
+  - --cluster=mikko-private-cluster
+
 images:
 - eu.gcr.io/$PROJECT_ID/dummy/$REPO_NAME:$SHORT_SHA
 
