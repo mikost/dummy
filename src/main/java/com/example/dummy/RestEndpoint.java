@@ -12,6 +12,6 @@ public class RestEndpoint {
     @GET
     @Produces("text/plain")
     public String getClichedMessage() {
-        return "Hello World!!!";
+        return "Hello Istio!!!";
     }
 }
